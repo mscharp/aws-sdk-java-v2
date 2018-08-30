@@ -13,12 +13,14 @@
  * permissions and limitations under the License.
  */
 
-package software.amazon.awssdk.core;
+package software.amazon.awssdk.awscore;
 
 import java.util.Collections;
 import java.util.Map;
+import java.util.Optional;
 import software.amazon.awssdk.annotations.Immutable;
 import software.amazon.awssdk.annotations.SdkPublicApi;
+import software.amazon.awssdk.utils.ToString;
 
 /**
  * Represents additional metadata included with a response from a service. Response
@@ -31,10 +33,11 @@ import software.amazon.awssdk.annotations.SdkPublicApi;
  */
 @Immutable
 @SdkPublicApi
-public class SdkResponseMetadata {
+public class AwsResponseMetadata {
     public static final String AWS_REQUEST_ID = "AWS_REQUEST_ID";
+    private static final String UNKNOWN = "UNKNOWN";
 
-    protected final Map<String, String> metadata;
+    private final Map<String, String> metadata;
 
     /**
      * Creates a new ResponseMetadata object from a specified map of raw
@@ -43,7 +46,7 @@ public class SdkResponseMetadata {
      * @param metadata
      *            The raw metadata for the new ResponseMetadata object.
      */
-    public SdkResponseMetadata(Map<String, String> metadata) {
+    public AwsResponseMetadata(Map<String, String> metadata) {
         this.metadata = Collections.unmodifiableMap(metadata);
     }
 
@@ -55,7 +58,7 @@ public class SdkResponseMetadata {
      *            The ResponseMetadata object from which to create the new
      *            object.
      */
-    public SdkResponseMetadata(SdkResponseMetadata originalResponseMetadata) {
+    public AwsResponseMetadata(AwsResponseMetadata originalResponseMetadata) {
         this(originalResponseMetadata.metadata);
     }
 
@@ -66,20 +69,26 @@ public class SdkResponseMetadata {
      *
      * @return The AWS request ID contained in this response metadata object.
      */
-    public String requestId() {
-        return metadata.get(AWS_REQUEST_ID);
+    public final String requestId() {
+        return getValue(AWS_REQUEST_ID);
     }
 
-    public String metadata(String key) {
-        return metadata.get(key);
+    public final String metadata(String key) {
+        return getValue(key);
+    }
+
+    public final Map<String, String> metadata() {
+        return metadata;
+    }
+
+    protected final String getValue(String key) {
+        return Optional.ofNullable(metadata.get(key)).orElse(UNKNOWN);
     }
 
     @Override
     public String toString() {
-        if (metadata == null) {
-            return "{}";
-        }
-        return metadata.toString();
+        return ToString.builder("AwsResponseMetadata")
+                       .add("metadata", metadata.keySet())
+                       .build();
     }
-
 }
