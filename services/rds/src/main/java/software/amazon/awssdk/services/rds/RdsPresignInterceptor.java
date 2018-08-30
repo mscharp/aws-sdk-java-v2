@@ -19,6 +19,7 @@ import static software.amazon.awssdk.auth.signer.internal.AwsSignerExecutionAttr
 
 import java.net.URI;
 import java.time.Clock;
+import software.amazon.awssdk.annotations.SdkInternalApi;
 import software.amazon.awssdk.auth.signer.Aws4Signer;
 import software.amazon.awssdk.auth.signer.params.Aws4PresignerParams;
 import software.amazon.awssdk.awscore.endpoint.DefaultServiceEndpointBuilder;
@@ -43,6 +44,7 @@ import software.amazon.awssdk.utils.http.SdkHttpUtils;
  *
  * @param <T> The request type.
  */
+@SdkInternalApi
 abstract class RdsPresignInterceptor<T extends RdsRequest> implements ExecutionInterceptor {
     private static final String SERVICE_NAME = "rds";
     private static final String PARAM_SOURCE_REGION = "SourceRegion";

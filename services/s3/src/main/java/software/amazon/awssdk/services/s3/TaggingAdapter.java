@@ -15,12 +15,14 @@
 
 package software.amazon.awssdk.services.s3;
 
+import software.amazon.awssdk.annotations.SdkProtectedApi;
 import software.amazon.awssdk.core.adapter.TypeAdapter;
 import software.amazon.awssdk.services.s3.model.Tag;
 import software.amazon.awssdk.services.s3.model.Tagging;
 import software.amazon.awssdk.utils.http.SdkHttpUtils;
 
-public class TaggingAdapter implements TypeAdapter<Tagging, String> {
+@SdkProtectedApi
+public final class TaggingAdapter implements TypeAdapter<Tagging, String> {
 
     @Override
     public String adapt(Tagging tagging) {
